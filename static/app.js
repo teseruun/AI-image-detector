@@ -22,7 +22,16 @@ function analyze(file) {
   errorBox.classList.add('hidden'); emptyState.classList.add('hidden'); resultContent.classList.add('hidden'); loading.classList.remove('hidden');
   previewWrap.classList.remove('hidden'); preview.src = URL.createObjectURL(file);
   const formData = new FormData(); formData.append('image', file);
-  fetch('/predict', { method: 'POST', body: formData }).then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(data.error); return data; }).then(renderResult).catch((error) => { loading.classList.add('hidden'); showError(error.message); });
+  fetch('/predict', { method: 'POST', body: formData }).then(async (response) => {
+    const body = await response.text();
+    let data = {};
+    if (body.trim()) {
+      try { data = JSON.parse(body); } catch { /* The server returned non-JSON text. */ }
+    }
+    if (!response.ok) throw new Error(data.error || `The server returned an error (${response.status}).`);
+    if (!data.label) throw new Error('The server returned an empty prediction.');
+    return data;
+  }).then(renderResult).catch((error) => { loading.classList.add('hidden'); showError(error.message || 'The image could not be analyzed.'); });
 }
 function renderResult(data) { loading.classList.add('hidden'); resultContent.classList.remove('hidden'); document.querySelector('#result-label').textContent = data.label; document.querySelector('#result-badge').textContent = data.shortLabel; document.querySelector('#probability').textContent = `AI PROBABILITY ${data.aiProbability}%`; document.querySelector('#confidence').textContent = `${data.confidence}%`; document.querySelector('#meter-fill').style.width = `${data.aiProbability}%`; }
 function showError(message) { errorBox.textContent = message; errorBox.classList.remove('hidden'); }

@@ -72,6 +72,9 @@ def predict():
         return jsonify(predict_image(image))
     except (OSError, ValueError) as error:
         return jsonify({"error": f"That file could not be analyzed: {error}"}), 400
+    except Exception:
+        app.logger.exception("Image prediction failed")
+        return jsonify({"error": "The image could not be analyzed right now. Please try again."}), 500
 
 
 if __name__ == "__main__":
