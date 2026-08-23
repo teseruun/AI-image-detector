@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Image Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="/"><span class="brand-mark">AI</span><span>AI Image Detector</span></a><nav><a href="#about">About</a><a href="#checker">Check an image</a></nav></header>
+  <main class="page">
+    <section class="hero"><div><p class="eyebrow">IMAGE AUTHENTICITY CHECK</p><h1>Know what<br>you’re looking at.</h1><p class="hero-copy">A quick, simple way to check whether an image looks AI-generated. Upload a file to get started.</p></div><div class="hero-note"><span class="note-circle">01</span><p>Upload<br>an image</p></div></section>
+    <section class="checker" id="checker" aria-label="Image detector">
+      <div class="upload-card" id="dropzone"><input id="file-input" type="file" accept="image/png,image/jpeg,image/webp" hidden><div class="card-label"><span>IMAGE TO CHECK</span><span>JPG · PNG · WEBP</span></div><div class="upload-action"><div class="upload-icon">↑</div><h2>Upload your image</h2><p>Drag and drop a file here, or <button id="browse-button" type="button">choose from your device</button></p></div><div class="card-footer"><span>Maximum file size: 10 MB</span><span class="file-ready">READY</span></div></div>
+      <div class="result-card" id="result-panel" aria-live="polite"><div class="card-label"><span>DETECTION RESULT</span><span class="result-state">WAITING</span></div><div class="empty-state" id="empty-state"><div class="empty-mark">○</div><h2>Your result is<br>shown here.</h2><p>Upload an image to see the prediction.</p></div><div class="preview-wrap hidden" id="preview-wrap"><img id="preview" alt="Selected image preview"><button class="clear-button" id="clear-button" type="button" aria-label="Remove selected image">×</button></div><div class="result-content hidden" id="result-content"><div class="result-heading"><div><span class="result-kicker">PREDICTION</span><h2 id="result-label">—</h2></div><span class="result-badge" id="result-badge">—</span></div><div class="meter"><div class="meter-fill" id="meter-fill"></div></div><div class="meter-labels"><span>REAL</span><span id="probability">AI PROBABILITY —</span><span>AI</span></div><div class="result-meta"><span>CONFIDENCE</span><strong id="confidence">—</strong></div><p class="disclaimer">This result is a model prediction, not definitive proof. Use it as one part of your review.</p></div><div class="loading hidden" id="loading"><span></span><span></span><span></span><p>Checking your image</p></div><div class="error hidden" id="error"></div></div>
+    </section>
+    <section class="about" id="about"><div class="about-heading"><p class="eyebrow">A LITTLE MORE</p><h2>Made for a<br>quick answer.</h2></div><div class="about-items"><article><span>01</span><h3>Upload</h3><p>Choose one JPG, PNG, or WEBP image from your device.</p></article><article><span>02</span><h3>Analyze</h3><p>Our EfficientNetV2 model reviews its visual patterns.</p></article><article><span>03</span><h3>Understand</h3><p>See the prediction and confidence in one clear result.</p></article></div></section>
+  </main>
+  <footer class="site-footer"><span>AI IMAGE DETECTOR</span><span>CAPSTONE PROJECT · 2026</span></footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
