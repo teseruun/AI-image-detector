@@ -27,20 +27,16 @@ def model_input_size():
 def predict_image(image):
     width, height = model_input_size()
     image = image.convert("RGB").resize((width, height))
-    pixels = np.asarray(image, dtype=np.float32)
-    output = np.asarray(model.predict(np.expand_dims(pixels, axis=0), verbose=0)).squeeze()
+    views = [image, image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)]
+    pixels = np.asarray([np.asarray(view, dtype=np.float32) for view in views])
+    output = np.asarray(model.predict(pixels, verbose=0)).squeeze(axis=-1)
 
-    if output.ndim == 0:
-        ai_probability = float(output)
-        if not 0 <= ai_probability <= 1:
-            ai_probability = float(tf.sigmoid(output))
-    elif output.size == 1:
+    if output.size == 1:
         ai_probability = float(output.flat[0])
         if not 0 <= ai_probability <= 1:
             ai_probability = float(tf.sigmoid(output.flat[0]))
     else:
-        probabilities = tf.nn.softmax(output).numpy()
-        ai_probability = float(probabilities[-1])
+        ai_probability = float(np.mean(output))
 
     ai_probability = float(np.clip(ai_probability, 0, 1))
     is_ai = ai_probability >= 0.5
