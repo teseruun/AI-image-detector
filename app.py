@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
 
+os.environ.setdefault("TF_NUM_INTRAOP_THREADS", "1")
+os.environ.setdefault("TF_NUM_INTEROP_THREADS", "1")
+
 import numpy as np
 from flask import Flask, jsonify, render_template, request
 from PIL import Image
