@@ -27,7 +27,7 @@ def model_input_size():
 def predict_image(image):
     width, height = model_input_size()
     image = image.convert("RGB").resize((width, height))
-    pixels = np.asarray(image, dtype=np.float32) / 255.0
+    pixels = np.asarray(image, dtype=np.float32)
     output = np.asarray(model.predict(np.expand_dims(pixels, axis=0), verbose=0)).squeeze()
 
     if output.ndim == 0:
